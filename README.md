@@ -108,7 +108,7 @@ Separate pipelines for `vote`, `worker`, and `result` apps
 1. Developer commits code → Azure DevOps pipeline triggers  
 2. Docker image is built and pushed to **ACR**  
 3. Deployment YAML is updated with new image tag  
-4. ArgoCD detects change → synchronizes Kubernetes cluster with the repo  
+4. ArgoCD detects change → synchronizes AKS Kubernetes cluster with the repo  
 5. App is updated seamlessly in the cluster  
 
 This approach demonstrates **GitOps principles**, ensuring **version-controlled deployments and automated rollouts**.  
