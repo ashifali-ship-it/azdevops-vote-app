@@ -25,5 +25,41 @@ This project demonstrates Kubernetes, and microservices concepts, along with a f
 
 ---
 
+## Table of Contents
+
+- [Overview](#overview)  
+- [Getting Started](#getting-started)  
+  - [Kubernetes Deployment](#run-the-app-in-kubernetes)  
+- [Architecture](#architecture)  
+- [CI/CD & GitOps Workflow](#cicd--gitops-workflow)  
+- [Notes](#notes)  
+
+---
+
+## Overview
+
+This solution demonstrates:
+
+- **Languages & frameworks:** Python, Node.js, .NET  
+- **Messaging:** Redis  
+- **Persistent storage:** PostgreSQL  
+- **Orchestration:** Kubernetes  
+- **CI/CD:** Azure DevOps Pipelines  
+- **GitOps:** ArgoCD  
+
+---
+
+## Getting Started
+
+### Run the App in Kubernetes
+
+The folder `k8s-specifications/` contains YAML definitions for deployments and services.
+
+Deploy the app:
+
+```bash
+kubectl create -f k8s-specifications/
+
+```
 
 
