@@ -62,7 +62,7 @@ Kubernetes needs credentials to pull images from ACR. Create a docker-registry s
 ```bash
 kubectl create secret docker-registry acr-secret \
   --namespace default \
-  --docker-server=<your-acr-name>.azurecr.io \
+  --docker-server=<acr-name>.azurecr.io \
   --docker-username=<service-principal-ID> \
   --docker-password=<service-principal-password>
 ```
