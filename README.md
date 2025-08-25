@@ -61,5 +61,59 @@ Deploy the app:
 kubectl create -f k8s-specifications/
 
 ```
+Delete resources:
+```bash
+kubectl delete -f k8s-specifications/
+```
+## Architecture
 
+![Architecture](architecture.png)
 
+**Components:**
+
+- **Vote App (Python)** – Frontend for voting  
+- **Redis** – Queues votes for processing  
+- **Worker App (.NET)** – Processes votes and updates Postgres  
+- **PostgreSQL** – Persistent database  
+- **Result App (Node.js)** – Shows real-time voting results  
+
+---
+
+## CI/CD & GitOps Workflow
+
+This project demonstrates **Azure DevOps Pipelines and GitOps deployment**:
+
+### Source Code Management
+- **Azure Repos**
+
+### CI Pipelines
+Separate pipelines for `vote`, `worker`, and `result` apps
+
+**Stages:**
+
+- **Build** – Builds Docker images  
+- **Push** – Pushes images to **Azure Container Registry (ACR)**  
+- **Test** – Runs simple smoke tests  
+- **Update** – Updates Kubernetes deployment YAML with new image tags  
+
+### CD with ArgoCD
+- Monitors Git repository  
+- Deploys updated manifests automatically to the Kubernetes cluster  
+
+**Workflow:**
+
+1. Developer commits code → Azure DevOps pipeline triggers  
+2. Docker image is built and pushed to **ACR**  
+3. Deployment YAML is updated with new image tag  
+4. ArgoCD detects change → synchronizes Kubernetes cluster with the repo  
+5. App is updated seamlessly in the cluster  
+
+This approach demonstrates **GitOps principles**, ensuring **version-controlled deployments and automated rollouts**.  
+
+---
+
+## Notes
+
+- Each client can vote only once per browser session  
+- This project is an **educational sample**, not production-ready  
+- Designed to demonstrate **multi-language microservices, Kubernetes, CI/CD, and GitOps integration**
