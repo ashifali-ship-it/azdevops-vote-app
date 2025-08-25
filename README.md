@@ -69,7 +69,7 @@ kubectl delete -f k8s-specifications/
 
 ## Architecture Diagram
 
-![Project Architecture](az-gitops-architecture.png)
+![Project Architecture](az-gitops project architecture.PNG)
 
 
 **Components:**
