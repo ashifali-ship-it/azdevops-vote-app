@@ -120,3 +120,12 @@ This approach demonstrates **GitOps principles**, ensuring **version-controlled 
 - Each client can vote only once per browser session  
 - This project is an **educational sample**, not production-ready  
 - Designed to demonstrate **multi-language microservices, Kubernetes, CI/CD, and GitOps integration**
+
+
+
+## Maintainers
+
+- **Ashif** – Project creator and maintainer  
+  - GitHub: [https://github.com/ashifali-ship-it](https://github.com/ashifali-ship-it)  
+  - Email: ashifali96@gmail.com
+
