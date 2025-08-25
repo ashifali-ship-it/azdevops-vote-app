@@ -1,0 +1,95 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  paths:
+    include:
+      - result/*
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: 'c0c84076-1bb9-41d1-b3f3-8e2a8256b635'
+  imageRepository: 'resultapp'
+  containerRegistry: 'azdevopstest.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/result/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+pool:
+  name: 'azurevm'
+
+stages:
+- stage: Build
+  displayName: Build 
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Build the Image
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: 'result/Dockerfile'
+        tags: '$(tag)'
+
+- stage: Push
+  displayName: Push
+  dependsOn: Build
+  jobs:
+  - job: Push
+    displayName: Push
+    steps:
+    - task: Docker@2
+      displayName: Push the Image
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: '$(tag)'
+
+
+- stage: Test
+  displayName: Test
+  dependsOn: Push
+  jobs:
+  - job: Test
+    displayName: Run Container Tests
+    steps:
+    - script: |
+        echo "Pulling and testing the container..."
+        docker pull $(containerRegistry)/$(imageRepository):$(tag)
+        # Run container in detached mode
+        docker run -d --rm --name testcontainer $(containerRegistry)/$(imageRepository):$(tag)
+        # Wait a bit for app to start
+        sleep 20
+        # Example test (replace with health check or curl to app endpoint)
+        docker ps | grep testcontainer
+        # Stop container
+        docker stop testcontainer
+      displayName: "Run container smoke test"
+
+- stage: Update
+  displayName: Update
+  dependsOn: Test
+  jobs:
+  - job: Update
+    displayName: Update
+    steps:
+    - script: |
+        sudo apt-get update -y
+        sudo apt-get install -y dos2unix
+        dos2unix $(Build.SourcesDirectory)/scripts/updateK8sManifests.sh
+      displayName: "Fix script line endings"
+
+    - task: Bash@3
+      displayName: "Update K8s manifests"
+      inputs:
+        targetType: filePath
+        filePath: 'scripts/updateK8sManifests.sh'
+        arguments: 'result $(imageRepository) $(tag)'
+      env:
+        AZURE_PAT: $(AZURE_PAT)   # secret pipeline variable
