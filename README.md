@@ -28,12 +28,10 @@ This project demonstrates Kubernetes, and microservices concepts, along with a f
 ## Table of Contents
 
 - [Overview](#overview)  
-- [Getting Started](#getting-started)  
-  - [Kubernetes Deployment](#run-the-app-in-kubernetes)  
+- [Deploying the App](#deploying-the-app)  
 - [Architecture](#architecture)  
 - [CI/CD & GitOps Workflow](#cicd--gitops-workflow)  
-- [Notes](#notes)  
-
+- [Notes](#notes) 
 ---
 
 ## Overview
@@ -49,21 +47,24 @@ This solution demonstrates:
 
 ---
 
-## Getting Started
+## Deploying the App
 
-### Run the App in Kubernetes
+The Voting App is deployed automatically via **ArgoCD**:
 
-The folder `k8s-specifications/` contains YAML definitions for deployments and services.
+1. Ensure ArgoCD is installed and connected to your Kubernetes cluster.  
+2. ArgoCD monitors the Git repository containing the Kubernetes manifests.  
+3. Any changes to manifests (e.g., new image tags) are automatically deployed to the cluster.
 
-Deploy the app:
+### Setting up Image Pull from Azure Container Registry (ACR)
+
+Kubernetes needs credentials to pull images from ACR. Create a docker-registry secret:
 
 ```bash
-kubectl create -f k8s-specifications/
-
-```
-Delete resources:
-```bash
-kubectl delete -f k8s-specifications/
+kubectl create secret docker-registry acr-secret \
+  --namespace default \
+  --docker-server=<your-acr-name>.azurecr.io \
+  --docker-username=<service-principal-ID> \
+  --docker-password=<service-principal-password>
 ```
 ## Architecture
 
