@@ -63,3 +63,45 @@ The voting application only accepts one vote per client browser. It does not reg
 This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
 example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
 deal with them in Docker at a basic level.
+
+
+
+
+*****************************************************************************************
+
+
+
+# Example Voting App with DevOps CI/CD
+
+![Azure DevOps](https://img.shields.io/badge/Azure%20DevOps-pipelines-blue?logo=azuredevops)
+![Docker](https://img.shields.io/badge/Docker-Containers-blue?logo=docker)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Cluster-blue?logo=kubernetes)
+![ArgoCD](https://img.shields.io/badge/ArgoCD-GitOps-red?logo=argocd)
+
+A simple distributed microservices application running across multiple Docker containers, with a full **DevOps CI/CD and GitOps workflow** implemented on **Azure DevOps** and **ArgoCD**.
+
+## Application Overview
+
+The Voting App consists of multiple services:
+
+* A front-end web app in [Python](/vote) which lets users vote between two options
+* [Redis](https://hub.docker.com/_/redis/) for queuing votes
+* A [.NET](/worker) worker which processes votes and stores them in…
+* A [Postgres](https://hub.docker.com/_/postgres/) database
+* A [Node.js](/result) web app showing real-time voting results
+
+This project demonstrates Docker, Kubernetes, and microservices concepts, along with a full **CI/CD pipeline**.
+
+---
+
+## Getting Started
+
+### Docker Compose
+
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose/) is included. On Linux, install the latest version of [Compose](https://docs.docker.com/compose/install/).
+
+Run in this directory to build and run the app:
+
+```bash
+docker compose up
+
